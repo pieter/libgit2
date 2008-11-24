@@ -2,7 +2,11 @@
 #include "thread-utils.h" /* for GIT_TLS */
 
 /* compile-time constant initialization required */
+#ifdef GIT_PTHREAD_TLS
+pthread_key_t git_errno_key = 0;
+#else
 GIT_TLS int git_errno = 0;
+#endif
 
 static struct {
 	int num;

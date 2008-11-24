@@ -20,6 +20,24 @@
 #  endif
 #endif
 
+#ifdef GIT_PTHREAD_TLS
+int git_tls_get_int(pthread_key_t key)
+{
+	int *ptr = (int *)pthread_getspecific(key);
+	if (!ptr)
+		return 0;
+	return *ptr;
+}
+
+void git_tls_set_int(pthread_key_t key, int value)
+{
+	int *ptr = (int *)pthread_getspecific(key);
+	if (!ptr)
+		ptr = malloc(sizeof(int));
+	*ptr = value;
+}
+#endif
+
 int git_online_cpus(void)
 {
 #ifdef _SC_NPROCESSORS_ONLN
