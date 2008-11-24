@@ -30,6 +30,24 @@ typedef struct
 GIT_EXTERN(int) git_oid_mkstr(git_oid *out, const char *str);
 
 /**
+ * Parse a git_oid into a hex string.
+ * @param oid oid structure to parse.
+ * @param str output hex string; must be pointing at the start of
+ *        the hex sequence and have at least the number of bytes
+ *        needed for an oid encoded in hex (40 bytes).
+ * @return GIT_SUCCESS if valid; GIT_ENOTOID on failure.
+ */
+GIT_EXTERN(int) git_oid_to_hex(git_oid *oid, char *str);
+
+/**
+ * Create a c-str with the oid's hex.
+ *
+ * @param oid theoid structure to parse;
+ * @return the c-string; NULL if memory is exhausted.
+ */
+GIT_EXTERN(char *) git_oid_mkhex(git_oid *oid);
+
+/**
  * Copy an already raw oid into a git_oid structure.
  * @param out oid structure the result is written into.
  * @param raw the raw input bytes to be copied.

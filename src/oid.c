@@ -57,3 +57,33 @@ int git_oid_mkstr(git_oid *out, const char *str)
 	}
 	return GIT_SUCCESS;
 }
+
+int git_oid_fill_hex(git_oid *oid, char *str)
+{
+	const unsigned char *sha1 = oid->id;
+	int i;
+
+	for (i = 0; i < 20; i++) {
+		static char hex[] = "0123456789abcdef";
+		unsigned int val = sha1[i];
+		*str++ = hex[val >> 4];
+		*str++ = hex[val & 0xf];
+	}
+
+	return GIT_SUCCESS;
+}
+
+char *git_oid_mkhex(git_oid *oid)
+{
+	char *str = malloc(sizeof(char) * 41);
+	if (!str)
+		return NULL;
+	str[40] = '\0';
+	if (git_oid_fill_hex(oid, str))
+	{
+		free(str);
+		return NULL;
+	}
+
+	return str;
+}
